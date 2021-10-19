@@ -29,6 +29,7 @@ users.forEach(user => {
     <div class="edit-user-form edit-${user.id}">
     <input value=${user.name} class="edit-${user.id}-user-name" placeholder="Enter your name"><br>
     <input value=${user.avatar} class="edit-${user.id}-user-avatar" placeholder="Enter your pic url">
+      <button onclick="saveUser(${user.id})">Save</button>
     </div>
     </div>
     </div>
@@ -76,3 +77,20 @@ function toggleEdit(userId){
     editUserForm.style.display = editUserForm.style.display== "block" ? "none" : "block";
 }
 
+async function saveUser(userId){
+
+    console.log("saving.."+userId);
+
+    const userName = document.querySelector(`.edit-${userId}-user-name`).value;
+    const userAvatar = document.querySelector(`.edit-${userId}-user-avatar`).value;
+
+    const data = await fetch("https://6166c4d913aa1d00170a66f7.mockapi.io/users/" + userId,
+    { 
+        method: "PUT",
+        headers: {"Content-Type":"application/json"},
+        body:JSON.stringify({name:userName,avatar:userAvatar}),
+     }
+    );
+
+    getAllUsers();
+}
